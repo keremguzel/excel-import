@@ -17,6 +17,16 @@ searchBox = driver.find_element(By.CLASS_NAME,"gLFyf")
 searchBox.send_keys("IBTECH")
 searchBox.send_keys(Keys.ENTER)
 
+#newLinks = []
+#pageButton = "//a[@aria-label='Page {pageNum}']"
+#for i in range(10):
+#    newLinks.append(driver.find_elements(By.CLASS_NAME,"yuRUbf"))
+#    driver.implicitly_wait(3)
+#    if i < 2 :
+#        driver.find_element(By.XPATH, pageButton.format(pageNum = i+2)).click()
+#    else:
+#        break
+
 links = driver.find_elements(By.CLASS_NAME,"yuRUbf")
 
 link1 = links[0].text.split('https://')
@@ -26,6 +36,17 @@ link3 = links[2].text.split('https://')
 ref1 = link1[1].split('.com')
 ref2 = link2[1].split('.com')
 ref3 = link3[1].split('.com')
+
+#lastLinks = []
+#for i in range (len(newLinks)):
+#    newLink= newLinks[i].text.split('https://')
+#    lastLinks.append(newLink)
+
+
+#refs = []
+#for j in range (len(lastLinks)):
+#    newRef = lastLinks[j].split('.com')
+#    refs.append(newRef)
 
 
 driver.close()
@@ -44,6 +65,12 @@ worksheet.write('B2', 'https://' + ref2[0] + '.com')
 
 worksheet.write('A3', link3[0])
 worksheet.write('B3', 'https://' + ref3[0] + '.com')
+
+#text1 = 'A{n}'
+#text2 = 'B{n}'
+#for w in range (len(refs)):
+#    worksheet.write(text1.format(w+1), lastLinks[w])
+#    worksheet.write(text2.format(w+1), 'https://' + refs[w] + '.com')
 
 
 workbook.close()
