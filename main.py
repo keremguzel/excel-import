@@ -37,13 +37,13 @@ worksheet.set_column('A:A', 20)
 worksheet.set_column('B:B', 20)
 
 worksheet.write('A1', link1[0])
-worksheet.write('B1', ref1[0] + '.com')
+worksheet.write('B1', 'https://' + ref1[0] + '.com')
 
 worksheet.write('A2', link2[0])
-worksheet.write('B2', ref2[0] + '.com')
+worksheet.write('B2', 'https://' + ref2[0] + '.com')
 
 worksheet.write('A3', link3[0])
-worksheet.write('B3', ref3[0] + '.com')
+worksheet.write('B3', 'https://' + ref3[0] + '.com')
 
 
 workbook.close()
