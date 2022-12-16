@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import xlsxwriter
 
+
 opts = ChromeOptions()
 opts.add_experimental_option("detach", True)
 driver = Chrome(chrome_options=opts)
@@ -17,36 +18,23 @@ searchBox = driver.find_element(By.CLASS_NAME,"gLFyf")
 searchBox.send_keys("IBTECH")
 searchBox.send_keys(Keys.ENTER)
 
-#newLinks = []
-#pageButton = "//a[@aria-label='Page {pageNum}']"
-#for i in range(10):
-#    newLinks.append(driver.find_elements(By.CLASS_NAME,"yuRUbf"))
-#    driver.implicitly_wait(3)
-#    if i < 2 :
-#        driver.find_element(By.XPATH, pageButton.format(pageNum = i+2)).click()
-#    else:
-#        break
 
 links = driver.find_elements(By.CLASS_NAME,"yuRUbf")
 
-link1 = links[0].text.split('https://')
-link2 = links[1].text.split('https://')
-link3 = links[2].text.split('https://')
+newLinks = []
+newRefs = []
 
-ref1 = link1[1].split('.com')
-ref2 = link2[1].split('.com')
-ref3 = link3[1].split('.com')
-
-#lastLinks = []
-#for i in range (len(newLinks)):
-#    newLink= newLinks[i].text.split('https://')
-#    lastLinks.append(newLink)
+for i in range(len(links)):
+    newLinks.append(links[i].text.split('https://'))
 
 
-#refs = []
-#for j in range (len(lastLinks)):
-#    newRef = lastLinks[j].split('.com')
-#    refs.append(newRef)
+for j in range(len(links)):
+    if '.net' in newLinks[j][1]:
+        newRefs.append(newLinks[j][1].split('.net'))
+    elif '.io' in newLinks[j][1]:
+        newRefs.append(newLinks[j][1].split('.io'))
+    else:
+        newRefs.append(newLinks[j][1].split('.com'))
 
 
 driver.close()
@@ -54,30 +42,17 @@ driver.close()
 workbook = xlsxwriter.Workbook('import_file.xlsx')
 worksheet = workbook.add_worksheet()
 
-worksheet.set_column('A:A', 20)
-worksheet.set_column('B:B', 20)
+worksheet.set_column('A:A', 30)
+worksheet.set_column('B:B', 30)
 
-worksheet.write('A1', link1[0])
-worksheet.write('B1', 'https://' + ref1[0] + '.com')
-
-worksheet.write('A2', link2[0])
-worksheet.write('B2', 'https://' + ref2[0] + '.com')
-
-worksheet.write('A3', link3[0])
-worksheet.write('B3', 'https://' + ref3[0] + '.com')
-
-#text1 = 'A{n}'
-#text2 = 'B{n}'
-#for w in range (len(refs)):
-#    worksheet.write(text1.format(w+1), lastLinks[w])
-#    worksheet.write(text2.format(w+1), 'https://' + refs[w] + '.com')
-
+text1 = 'A{n:.2f}'
+text2 = 'B{n:.2f}'
+for j in range(len(newLinks)):
+    for k in range(1):
+        stringLink = newLinks[j][k]
+        stringRef = newRefs[j][k]
+        worksheet.write(text1.format(n = j+1), stringLink)
+        worksheet.write(text2.format(n = j+1), 'https://' + stringRef + '.com')
 
 workbook.close()
-
-
-
-
-
-
 
