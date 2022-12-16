@@ -42,8 +42,8 @@ driver.close()
 workbook = xlsxwriter.Workbook('import_file.xlsx')
 worksheet = workbook.add_worksheet()
 
-worksheet.set_column('A:A', 30)
-worksheet.set_column('B:B', 30)
+worksheet.set_column('A:A', len(links))
+worksheet.set_column('B:B', len(links))
 
 text1 = 'A{n:.2f}'
 text2 = 'B{n:.2f}'
