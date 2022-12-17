@@ -18,23 +18,50 @@ searchBox = driver.find_element(By.CLASS_NAME,"gLFyf")
 searchBox.send_keys("IBTECH")
 searchBox.send_keys(Keys.ENTER)
 
-
-links = driver.find_elements(By.CLASS_NAME,"yuRUbf")
+def purifyExtensions(i, j):
+    if '.net' in newLinks[i][j]:
+        newRefs.append(newLinks[i][j].split('.net'))
+    elif '.io' in newLinks[i][j]:
+        newRefs.append(newLinks[i][j].split('.io'))
+    elif '.gov' in newLinks[i][j]:
+        newRefs.append(newLinks[i][j].split('.gov'))
+    elif '.org' in newLinks[i][j]:
+        newRefs.append(newLinks[i][j].split('.org'))
+    elif '.dev' in newLinks[i][j]:
+        newRefs.append(newLinks[i][j].split('.dev'))
+    else:
+        newRefs.append(newLinks[i][j].split('.com'))
 
 newLinks = []
 newRefs = []
 
-for i in range(len(links)):
-    newLinks.append(links[i].text.split('https://'))
-
-
-for j in range(len(links)):
-    if '.net' in newLinks[j][1]:
-        newRefs.append(newLinks[j][1].split('.net'))
-    elif '.io' in newLinks[j][1]:
-        newRefs.append(newLinks[j][1].split('.io'))
-    else:
-        newRefs.append(newLinks[j][1].split('.com'))
+for i in range(3):
+    links = driver.find_elements(By.CLASS_NAME,"yuRUbf")
+    driver.implicitly_wait(3)
+    for k in range(1):
+        for j in range(9):
+            newLinks.append(links[j].text.split('https://'))
+    if i == 0:
+        for j in range(1):
+            for k in range(9):
+                purifyExtensions(k,1)
+                #newRefs.append(newLinks[k][1].split('.com'))
+        driver.find_element(By.XPATH, '//*[@id="pnnext"]/span[2]').click()
+    elif i == 1:
+        for j in range(1):
+            for k in range(9):
+                if k ==4:
+                    purifyExtensions(k+9,0)
+                    #newRefs.append(newLinks[k + 9][0].split('.com'))
+                else:
+                    purifyExtensions(k + 9, 1)
+                    #newRefs.append(newLinks[k + 9][1].split('.com'))
+        driver.find_element(By.XPATH, '//*[@id="pnnext"]/span[2]').click()
+    elif i == 2:
+        for j in range(1):
+            for k in range(9):
+                purifyExtensions(k+18,1)
+                #newRefs.append(newLinks[k+18][1].split('.com'))
 
 
 driver.close()
@@ -42,8 +69,8 @@ driver.close()
 workbook = xlsxwriter.Workbook('import_file.xlsx')
 worksheet = workbook.add_worksheet()
 
-worksheet.set_column('A:A', len(links))
-worksheet.set_column('B:B', len(links))
+worksheet.set_column('A:A', len(newLinks))
+worksheet.set_column('B:B', len(newLinks))
 
 text1 = 'A{n:.2f}'
 text2 = 'B{n:.2f}'
